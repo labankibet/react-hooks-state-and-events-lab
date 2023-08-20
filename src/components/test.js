@@ -1,23 +1,37 @@
 import React, { useState } from "react";
+import Item from "./Item";
 
-function Item({ name, category }) {
-  // Initialize state to track whether the item is in the cart or not
-  const [inCart, setInCart] = useState(false);
+function ShoppingList({ items }) {
+  // Initialize selectedCategory with "All" as the default value
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
-  // Function to toggle the item's status in the cart
-  const toggleCartStatus = () => {
-    setInCart(!inCart);
+  // Function to handle the change in the <select> element
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
   };
 
+  // Filter items based on selectedCategory
+  const filteredItems = selectedCategory === "All"
+    ? items
+    : items.filter((item) => item.category === selectedCategory);
+
   return (
-    <li className={inCart ? "in-cart" : ""}>
-      <span>{name}</span>
-      <span className="category">{category}</span>
-      <button className="add" onClick={toggleCartStatus}>
-        {inCart ? "Remove From Cart" : "Add to Cart"}
-      </button>
-    </li>
+    <div className="ShoppingList">
+      <div className="Filter">
+        <select name="filter" onChange={handleCategoryChange} value={selectedCategory}>
+          <option value="All">Filter by category</option>
+          <option value="Produce">Produce</option>
+          <option value="Dairy">Dairy</option>
+          <option value="Dessert">Dessert</option>
+        </select>
+      </div>
+      <ul className="Items">
+        {filteredItems.map((item) => (
+          <Item key={item.id} name={item.name} category={item.category} />
+        ))}
+      </ul>
+    </div>
   );
 }
 
-export default Item;
+export default ShoppingList;
