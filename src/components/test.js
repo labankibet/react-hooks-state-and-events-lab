@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 
 function Item({ name, category }) {
+  // Initialize state to track whether the item is in the cart or not
   const [inCart, setInCart] = useState(false);
 
+  // Function to toggle the item's status in the cart
   const toggleCartStatus = () => {
     setInCart(!inCart);
   };
